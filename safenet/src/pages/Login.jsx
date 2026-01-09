@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import API_BASE_URL from "../apiconfig";
+import API_BASE_URL from "../apiConfig";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {

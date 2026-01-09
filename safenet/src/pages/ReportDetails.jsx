@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import API_BASE_URL from "../apiconfig";
+import API_BASE_URL from "../apiConfig";
 
 const ReportDetails = () => {
   const { id } = useParams();

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import API_BASE_URL from "../apiconfig";
+import API_BASE_URL from "../apiConfig";
+import { useNavigate } from "react-router-dom";
 
 const ReportForm = () => {
   const [form, setForm] = useState({
@@ -19,6 +20,8 @@ const ReportForm = () => {
     isAnonymous: true,
   });
 
+  const navigate = useNavigate();
+
   const [files, setFiles] = useState(null);
 
   const handleChange = (e) => {
@@ -34,9 +37,9 @@ const ReportForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
+  try {
     const response = await fetch(`${API_BASE_URL}/reports`, {
       method: "POST",
       headers: {
@@ -55,20 +58,18 @@ const ReportForm = () => {
     }
 
     const data = await response.json();
+
     alert(`Report submitted successfully. ReportId: ${data.reportId}`);
+
+    // ✅ THIS IS THE KEY
+    navigate("/reports");
 
   } catch (error) {
     console.error(error);
     alert("Error submitting report");
   }
+};
 
-
-    // ---- NO API for now ----
-    console.log("Form Data:", form);
-    console.log("Uploaded Files:", files);
-
-    alert("Report submitted (UI only — API will be added later)");
-  };
 
   return (
     <div className="container mt-4">
