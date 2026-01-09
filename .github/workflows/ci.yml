@@ -3,30 +3,44 @@ name: SafeNet CI Pipeline
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    # 1️⃣ Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
 
+    # 2️⃣ Setup .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
 
-    - name: Build Backend
-      run: dotnet build backend/SafeNetAPI/SafeNetAPI.csproj
+    # 3️⃣ Restore & Build Backend
+    - name: Restore Backend
+      run: dotnet restore SafeNetAPI/SafeNetAPI.csproj
 
+    - name: Build Backend
+      run: dotnet build SafeNetAPI/SafeNetAPI.csproj --configuration Release --no-restore
+
+    # 4️⃣ Setup Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
 
+    # 5️⃣ Install & Build Frontend
+    - name: Install Frontend Dependencies
+      run: |
+        cd safenet
+        npm install
+
     - name: Build Frontend
       run: |
-        cd frontend/safenet
-        npm install
+        cd safenet
         npm run build
